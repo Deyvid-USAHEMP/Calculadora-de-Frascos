@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Duração de Frasco</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background-color: #2e7d32;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2e7d32;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Calculadora de Duração de Frasco</h2>
+  <label for="gotasManha">Gotas pela manhã:</label>
+  <input type="number" id="gotasManha" value="2">
+
+  <label for="gotasNoite">Gotas à noite:</label>
+  <input type="number" id="gotasNoite" value="2">
+
+  <label for="aumentoSemanal">Aumento semanal (por dose):</label>
+  <input type="number" id="aumentoSemanal" value="1">
+
+  <label for="totalGotasFrasco">Total de gotas no frasco:</label>
+  <input type="number" id="totalGotasFrasco" value="900">
+
+  <button id="btnCalcular">Calcular Duração</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function calcularDuracao() {
+      let gotasManha = parseFloat(document.getElementById("gotasManha").value);
+      let gotasNoite = parseFloat(document.getElementById("gotasNoite").value);
+      let aumentoSemanal = parseFloat(document.getElementById("aumentoSemanal").value);
+      let totalGotas = parseFloat(document.getElementById("totalGotasFrasco").value);
+
+      let dias = 0;
+      let semana = 0;
+      let gotasUsadas = 0;
+
+      while (gotasUsadas <= totalGotas) {
+        let doseManha = gotasManha + (aumentoSemanal * semana);
+        let doseNoite = gotasNoite + (aumentoSemanal * semana);
+        let doseDia = doseManha + doseNoite;
+        if (gotasUsadas + doseDia > totalGotas) break;
+
+        gotasUsadas += doseDia;
+        dias++;
+        if (dias % 7 === 0) semana++;
+      }
+
+      document.getElementById("resultado").innerText =
+        `O frasco dura aproximadamente ${dias} dias (${Math.floor(dias / 7)} semanas e ${dias % 7} dias).`;
+    }
+  
+    document.getElementById("btnCalcular").addEventListener("click", calcularDuracao);
+
+  </script>
+</body>
+</html>
